@@ -1,10 +1,18 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { PrismaService } from '@/common/infrastructure/database/prisma.service';
+import { environmentConfig } from '@/config/environment.config';
+import { Global, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 
+@Global()
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      load: [environmentConfig],
+      isGlobal: true,
+    }),
+  ],
+  providers: [PrismaService],
+  exports: [PrismaService],
+  controllers: [],
 })
 export class AppModule {}
